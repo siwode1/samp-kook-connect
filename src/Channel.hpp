@@ -1,0 +1,152 @@
+#pragma once
+
+#include "Singleton.hpp"
+#include "types.hpp"
+#include "Callback.hpp"
+
+#include <string>
+#include <atomic>
+
+#include <json.hpp>
+
+#undef SendMessage // Windows at its finest
+
+
+using json = nlohmann::json;
+
+
+class Channel
+{
+	friend class ChannelManager;
+public:
+	enum class Type : unsigned int
+	{
+		GUILD_TEXT = 0,
+		DM = 1,
+		GUILD_VOICE = 2,
+		GROUP_DM = 3,
+		GUILD_CATEGORY = 4,
+		GUILD_NEWS = 5,
+		GUILD_STORE = 6
+	};
+
+public:
+	Channel(ChannelId_t pawn_id, json const &data, GuildId_t guild_id);
+	Channel(ChannelId_t pawn_id, Snowflake_t channel_id, Type type);
+	~Channel() = default;
+
+private:
+	const ChannelId_t m_PawnId;
+
+	Snowflake_t m_Id;
+
+	// KOOK: For DM via user-chat, messages are addressed by chat_code rather than channel_id.
+	// When m_ChatCode is non-empty, SendMessage will use it instead of m_Id.
+	std::string m_ChatCode;
+
+	GuildId_t m_GuildId = INVALID_GUILD_ID;
+
+	Type m_Type;
+
+	std::string
+		m_Name,
+		m_Topic;
+
+	int m_Position = -1;
+	bool m_IsNsfw = false;
+
+	ChannelId_t m_ParentId = INVALID_CHANNEL_ID;
+
+public:
+	inline ChannelId_t GetPawnId() const
+	{
+		return m_PawnId;
+	}
+	inline Snowflake_t const &GetId() const
+	{
+		return m_Id;
+	}
+	inline Type GetType() const
+	{
+		return m_Type;
+	}
+	inline GuildId_t GetGuildId() const
+	{
+		return m_GuildId;
+	}
+	inline std::string const &GetName() const
+	{
+		return m_Name;
+	}
+	inline std::string const &GetTopic() const
+	{
+		return m_Topic;
+	}
+	inline int GetPosition() const
+	{
+		return m_Position;
+	}
+	inline bool IsNsfw() const
+	{
+		return m_IsNsfw;
+	}
+	inline ChannelId_t GetParentId() const
+	{
+		return m_ParentId;
+	}
+
+	void SendMessage(std::string &&msg, pawn_cb::Callback_t &&cb);
+	void SendEmbeddedMessage(const Embed_t & embed, std::string&& msg, pawn_cb::Callback_t&& cb);
+	void SetChannelName(std::string const &name);
+	void SetChannelTopic(std::string const &topic);
+	void SetChannelPosition(int const position);
+	void SetChannelNsfw(bool const is_nsfw);
+	void SetChannelParentCategory(Channel_t const &parent);
+	void DeleteChannel();
+	void Update(json const &data);
+	void UpdateParentChannel(Snowflake_t const &parent_id);
+};
+
+
+class ChannelManager : public Singleton<ChannelManager>
+{
+	friend class Singleton<ChannelManager>;
+private:
+	ChannelManager() = default;
+	~ChannelManager() = default;
+
+private:
+	const unsigned int m_InitValue = 1;
+	std::atomic<unsigned int> m_Initialized{ 0 };
+
+	std::map<ChannelId_t, Channel_t> m_Channels; //PAWN channel-id to actual channel map
+	ChannelId_t m_CreatedChannelId = INVALID_CHANNEL_ID;
+
+public:
+	void Initialize();
+	bool IsInitialized();
+
+	bool CreateGuildChannel(Guild_t const &guild,
+		std::string const &name, Channel::Type type, pawn_cb::Callback_t &&callback);
+	ChannelId_t GetCreatedGuildChannelId() const
+	{
+		return m_CreatedChannelId;
+	}
+
+	ChannelId_t AddChannel(json const &data, GuildId_t guild_id = 0);
+	ChannelId_t AddDMChannel(json const & data);
+	// KOOK: create a placeholder channel by id when not present in cache
+	ChannelId_t AddChannelById(Snowflake_t const &channel_id, Channel::Type type = Channel::Type::GUILD_TEXT);
+
+	// KOOK: create a DM channel entry backed by user-chat chat_code
+	ChannelId_t AddDMByChatCode(std::string const &chat_code, Snowflake_t const &target_user_id);
+
+	// KOOK: resolve channel type asynchronously by querying API and update cache
+	void ResolveChannelTypeAsync(Snowflake_t const &channel_id);
+
+	void DeleteChannel(json const &data);
+
+	Channel_t const &FindChannel(ChannelId_t id);
+	Channel_t const &FindChannelByName(std::string const &name);
+	Channel_t const &FindChannelById(Snowflake_t const &sfid);
+};

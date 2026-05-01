@@ -1,0 +1,137 @@
+#pragma once
+
+#include "sdk.hpp"
+
+#define AMX_DECLARE_NATIVE(native) \
+	cell AMX_NATIVE_CALL native(AMX *amx, cell *params)
+
+#define AMX_DEFINE_NATIVE(native) \
+	{#native, Native::native},
+
+
+namespace Native
+{
+	//AMX_DECLARE_NATIVE(native_name);
+	AMX_DECLARE_NATIVE(DCC_FindChannelByName);
+	AMX_DECLARE_NATIVE(KCC_FindChannelById);
+	AMX_DECLARE_NATIVE(KCC_GetChannelId);
+	AMX_DECLARE_NATIVE(DCC_GetChannelType);
+	AMX_DECLARE_NATIVE(KCC_GetChannelGuild);
+	AMX_DECLARE_NATIVE(KCC_GetChannelName);
+	AMX_DECLARE_NATIVE(KCC_GetChannelTopic);
+	AMX_DECLARE_NATIVE(KCC_GetChannelPosition);
+	AMX_DECLARE_NATIVE(DCC_IsChannelNsfw);
+	AMX_DECLARE_NATIVE(DCC_GetChannelParentCategory);
+	AMX_DECLARE_NATIVE(KCC_SendChannelMessage);
+	AMX_DECLARE_NATIVE(KCC_SetChannelName);
+	AMX_DECLARE_NATIVE(KCC_SetChannelTopic);
+	AMX_DECLARE_NATIVE(DCC_SetChannelPosition);
+	AMX_DECLARE_NATIVE(DCC_SetChannelNsfw);
+	AMX_DECLARE_NATIVE(DCC_SetChannelParentCategory);
+	AMX_DECLARE_NATIVE(KCC_DeleteChannel);
+
+	AMX_DECLARE_NATIVE(KCC_GetMessageId);
+	AMX_DECLARE_NATIVE(KCC_GetMessageChannel);
+	AMX_DECLARE_NATIVE(KCC_GetMessageAuthor);
+	AMX_DECLARE_NATIVE(KCC_GetMessageContent);
+	AMX_DECLARE_NATIVE(DCC_IsMessageTts);
+	AMX_DECLARE_NATIVE(KCC_IsMessageMentioningEveryone);
+	AMX_DECLARE_NATIVE(KCC_GetMessageUserMentionCount);
+	AMX_DECLARE_NATIVE(KCC_GetMessageUserMention);
+	AMX_DECLARE_NATIVE(KCC_GetMessageRoleMentionCount);
+	AMX_DECLARE_NATIVE(KCC_GetMessageRoleMention);
+	AMX_DECLARE_NATIVE(KCC_DeleteMessage);
+	AMX_DECLARE_NATIVE(KCC_GetCreatedMessage);
+
+	AMX_DECLARE_NATIVE(KCC_FindUserByName);
+	AMX_DECLARE_NATIVE(KCC_FindUserById);
+	AMX_DECLARE_NATIVE(KCC_GetUserId);
+	AMX_DECLARE_NATIVE(KCC_GetUserName);
+	AMX_DECLARE_NATIVE(KCC_GetUserDiscriminator);
+	AMX_DECLARE_NATIVE(KCC_IsUserBot);
+	AMX_DECLARE_NATIVE(KCC_IsUserVerified);
+
+	AMX_DECLARE_NATIVE(KCC_FindRoleByName);
+	AMX_DECLARE_NATIVE(KCC_FindRoleById);
+	AMX_DECLARE_NATIVE(KCC_GetRoleId);
+	AMX_DECLARE_NATIVE(KCC_GetRoleName);
+	AMX_DECLARE_NATIVE(KCC_GetRoleColor);
+	AMX_DECLARE_NATIVE(KCC_GetRolePermissions);
+	AMX_DECLARE_NATIVE(KCC_IsRoleHoist);
+	AMX_DECLARE_NATIVE(KCC_GetRolePosition);
+	AMX_DECLARE_NATIVE(KCC_IsRoleMentionable);
+
+	AMX_DECLARE_NATIVE(KCC_FindGuildByName);
+	AMX_DECLARE_NATIVE(KCC_FindGuildById);
+	AMX_DECLARE_NATIVE(KCC_GetGuildId);
+	AMX_DECLARE_NATIVE(KCC_GetGuildName);
+	AMX_DECLARE_NATIVE(KCC_GetGuildOwnerId);
+	AMX_DECLARE_NATIVE(KCC_GetGuildRole);
+	AMX_DECLARE_NATIVE(KCC_GetGuildRoleCount);
+	AMX_DECLARE_NATIVE(KCC_GetGuildMember);
+	AMX_DECLARE_NATIVE(KCC_GetGuildMemberCount);
+	AMX_DECLARE_NATIVE(KCC_GetGuildMemberVoiceChannel);
+	AMX_DECLARE_NATIVE(KCC_GetGuildMemberNickname);
+	AMX_DECLARE_NATIVE(KCC_GetGuildMemberRole);
+	AMX_DECLARE_NATIVE(KCC_GetGuildMemberRoleCount);
+	AMX_DECLARE_NATIVE(KCC_HasGuildMemberRole);
+	AMX_DECLARE_NATIVE(DCC_GetGuildMemberStatus);
+	AMX_DECLARE_NATIVE(KCC_GetGuildChannel);
+	AMX_DECLARE_NATIVE(KCC_GetGuildChannelCount);
+	AMX_DECLARE_NATIVE(KCC_GetAllGuilds);
+	AMX_DECLARE_NATIVE(DCC_SetGuildName);
+	AMX_DECLARE_NATIVE(KCC_CreateGuildChannel);
+	AMX_DECLARE_NATIVE(KCC_GetCreatedGuildChannel);
+	AMX_DECLARE_NATIVE(KCC_SetGuildMemberNickname);
+	AMX_DECLARE_NATIVE(DCC_SetGuildMemberVoiceChannel);
+	AMX_DECLARE_NATIVE(KCC_AddGuildMemberRole);
+	AMX_DECLARE_NATIVE(KCC_RemoveGuildMemberRole);
+	AMX_DECLARE_NATIVE(KCC_RemoveGuildMember);
+	AMX_DECLARE_NATIVE(KCC_CreateGuildMemberBan);
+	AMX_DECLARE_NATIVE(KCC_RemoveGuildMemberBan);
+	AMX_DECLARE_NATIVE(DCC_SetGuildRolePosition);
+	AMX_DECLARE_NATIVE(KCC_SetGuildRoleName);
+	AMX_DECLARE_NATIVE(KCC_SetGuildRolePermissions);
+	AMX_DECLARE_NATIVE(KCC_SetGuildRoleColor);
+	AMX_DECLARE_NATIVE(KCC_SetGuildRoleHoist);
+	AMX_DECLARE_NATIVE(KCC_SetGuildRoleMentionable);
+	AMX_DECLARE_NATIVE(KCC_CreateGuildRole);
+	AMX_DECLARE_NATIVE(KCC_GetCreatedGuildRole);
+	AMX_DECLARE_NATIVE(KCC_DeleteGuildRole);
+
+	AMX_DECLARE_NATIVE(DCC_GetBotPresenceStatus);
+	AMX_DECLARE_NATIVE(DCC_TriggerBotTypingIndicator);
+	AMX_DECLARE_NATIVE(DCC_SetBotNickname);
+	AMX_DECLARE_NATIVE(KCC_CreatePrivateChannel);
+	AMX_DECLARE_NATIVE(KCC_GetCreatedPrivateChannel);
+	AMX_DECLARE_NATIVE(DCC_SetBotPresenceStatus);
+	AMX_DECLARE_NATIVE(DCC_SetBotActivity);
+
+	AMX_DECLARE_NATIVE(KCC_EscapeMarkdown);
+
+	AMX_DECLARE_NATIVE(KCC_CreateEmbed);
+	AMX_DECLARE_NATIVE(KCC_DeleteEmbed);
+	AMX_DECLARE_NATIVE(KCC_SendChannelEmbedMessage);
+	AMX_DECLARE_NATIVE(KCC_AddEmbedField);
+	AMX_DECLARE_NATIVE(KCC_SetEmbedTitle);
+	AMX_DECLARE_NATIVE(KCC_SetEmbedDescription);
+	AMX_DECLARE_NATIVE(KCC_SetEmbedUrl);
+	AMX_DECLARE_NATIVE(KCC_SetEmbedTimestamp);
+	AMX_DECLARE_NATIVE(KCC_SetEmbedColor);
+	AMX_DECLARE_NATIVE(KCC_SetEmbedFooter);
+	AMX_DECLARE_NATIVE(KCC_SetEmbedThumbnail);
+	AMX_DECLARE_NATIVE(KCC_SetEmbedImage);
+
+	AMX_DECLARE_NATIVE(KCC_DeleteInternalMessage);
+
+	AMX_DECLARE_NATIVE(KCC_CreateEmoji);
+	AMX_DECLARE_NATIVE(KCC_DeleteEmoji);
+	AMX_DECLARE_NATIVE(KCC_GetEmojiName);
+
+	AMX_DECLARE_NATIVE(KCC_CreateReaction);
+	AMX_DECLARE_NATIVE(KCC_DeleteMessageReaction);
+
+	AMX_DECLARE_NATIVE(KCC_EditMessage);
+	AMX_DECLARE_NATIVE(KCC_SetMessagePersistent);
+	AMX_DECLARE_NATIVE(KCC_CacheChannelMessage);
+}
