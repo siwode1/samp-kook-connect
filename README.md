@@ -28,6 +28,8 @@
 对于 open.mp 服务器，你也可以在服务器配置文件中配置机器人令牌：
 
 ```
-kook.bot_token YOUR_BOT_TOKEN_HERE
+"kook": {
+        "bot_token": "token"
+    }
 ```
 
